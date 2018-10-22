@@ -16,4 +16,13 @@
     catch [Microsoft.ActiveDirectory.Management.ADIdentityNotFoundException]{ 
         Write-Output "The user doesn't exist!"
     }
+
+<#
+.Synopsis
+   Get Immutable ID from the AD user object
+.DESCRIPTION
+   The cmdlet returns the ImmutableID from the given AD user. This is useful to compare the immutableID from the office365 user account.
+.EXAMPLE
+   Get-ADImmutableID -Identity "Naw.Awn"
+#>
 }
