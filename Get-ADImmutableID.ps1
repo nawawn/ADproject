@@ -1,4 +1,4 @@
-﻿function Get-ADImmutableID{
+﻿Function Get-ADImmutableID{
     [CmdletBinding()]    
     [OutputType([String])]
     Param(
