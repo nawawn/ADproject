@@ -19,7 +19,7 @@
 
     If ($ProxyArray -contains $proxyaddress){
         Write-Verbose "Removing the $proxyaddress from ProxyAddress attribute..."
-        Set-ADUser $Identity -Remove @{Proxyaddresses=$proxyaddress}        
+        Set-ADUser $Identity -Remove @{Proxyaddresses=$proxyaddress}
     }
     Else { Write-Warning "$proxyaddress has already been removed." }
 
