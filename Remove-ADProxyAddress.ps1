@@ -6,9 +6,9 @@
         Position=0)][ValidateNotNull()]
         [Alias("Id")][String]$Identity,
         [Alias("Dn")][String]$DomainName,
-        [String]$Protocol = "smtp:"
+        [ValidateSet("smtp:","SMTP:","sip:","SIP:","eum:","EUM:")]$Protocol = "smtp:"        
     )    
-    $proxyaddress = $Protocol.ToLower() + $Identity + "@" + $DomainName
+    $proxyaddress = $Protocol + $Identity + "@" + $DomainName
     Try {
         $ProxyArray = Get-ADUser $Identity -Properties ProxyAddresses | Select -ExpandProperty ProxyAddresses
     }

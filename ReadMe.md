@@ -4,4 +4,5 @@ This project is to create Cmdlets which are not available in AD PowerShell and e
 * Resolve-ADCanonicalName
 * Get-ADImmutableID
 * Remove-ADProxyAddress
+* Add-ADProxyAddress
 * Base64
