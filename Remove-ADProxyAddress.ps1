@@ -13,7 +13,7 @@
         $ProxyArray = Get-ADUser $Identity -Properties ProxyAddresses | Select -ExpandProperty ProxyAddresses
     }
     catch [Microsoft.ActiveDirectory.Management.ADIdentityNotFoundException]{
-        Write-Output "The user doesn't exist!"
+        Write-Warning "$Identity - The user name can't be found!"
         return
     }
 
@@ -21,7 +21,7 @@
         Write-Verbose "Removing the $proxyaddress from ProxyAddress attribute..."
         Set-ADUser $Identity -Remove @{Proxyaddresses=$proxyaddress}
     }
-    Else { Write-Warning "$proxyaddress has already been removed." }
+    Else { Write-Output "$proxyaddress has already been removed." }
 
 <#
 .Synopsis
