@@ -4,22 +4,22 @@
         ValueFromPipeline=$true,
         ValueFromPipelineByPropertyName=$true,
         Position=0)][ValidateNotNull()]
-        [Alias("Id")][String]$Identity,
+        [Alias("Id")][String]$Name,
         [Alias("Dn")][String]$DomainName,
         [ValidateSet("smtp:","SMTP:","sip:","SIP:","eum:","EUM:")]$Protocol = "smtp:"        
     )    
-    $proxyaddress = $Protocol + $Identity + "@" + $DomainName
+    $proxyaddress = $Protocol + $Name + "@" + $DomainName
     Try {
-        $ProxyArray = Get-ADUser $Identity -Properties ProxyAddresses | Select -ExpandProperty ProxyAddresses
+        $ProxyArray = Get-ADUser $Name -Properties ProxyAddresses | Select -ExpandProperty ProxyAddresses
     }
     catch [Microsoft.ActiveDirectory.Management.ADIdentityNotFoundException]{
-        Write-Warning "$Identity - The user name can't be found!"
+        Write-Warning "$Name - The user name can't be found!"
         return
     }
 
     If ($ProxyArray -contains $proxyaddress){
         Write-Verbose "Removing the $proxyaddress from ProxyAddress attribute..."
-        Set-ADUser $Identity -Remove @{Proxyaddresses=$proxyaddress}
+        Set-ADUser $Name -Remove @{Proxyaddresses=$proxyaddress}
     }
     Else { Write-Output "$proxyaddress has already been removed." }
 

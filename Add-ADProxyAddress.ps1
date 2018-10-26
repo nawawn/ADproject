@@ -4,24 +4,22 @@
         ValueFromPipeline=$true,
         ValueFromPipelineByPropertyName=$true,
         Position=0)][ValidateNotNull()]
-        [Alias("Id")][String]$Identity,
+        [Alias("Id")][String]$Name,
         [Alias("Dn")][String]$DomainName,
         [ValidateSet("smtp:","sip:","eum:")][String]$Protocol = "smtp:",
         [Switch]$Primary
     )
 
-    If ($Primary){
-        $proxyaddress = $Protocol.ToUpper() + $Identity + "@" + $DomainName
-    }
-    Else {
-        $proxyaddress = $Protocol.ToLower() + $Identity + "@" + $DomainName
-    }
+    Switch($PSBoundParameters.Keys){
+        'Primary' {$proxyaddress = $Protocol.ToUpper() + $Name + "@" + $DomainName }
+        default {$proxyaddress = $Protocol.ToLower() + $Name + "@" + $DomainName }
+    }    
 
     Try {
-        $ProxyArray = Get-ADUser $Identity -Properties ProxyAddresses | Select -ExpandProperty ProxyAddresses
+        $ProxyArray = Get-ADUser $Name -Properties ProxyAddresses | Select -ExpandProperty ProxyAddresses
     }
     catch [Microsoft.ActiveDirectory.Management.ADIdentityNotFoundException]{
-        Write-Warning "$Identity - The user name can't be found!"
+        Write-Warning "$Name - The user name can't be found!"
         return
     }
 
@@ -31,7 +29,7 @@
     }
     Else { 
         Write-Verbose "Adding the $proxyaddress to AD ProxyAddress attribute..."
-        Set-ADUser $Identity -Add @{Proxyaddresses=$proxyaddress}
+        Set-ADUser $Name -Add @{Proxyaddresses=$proxyaddress}
     }
 
 <#
