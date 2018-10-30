@@ -1,4 +1,5 @@
 ﻿Function Add-ADProxyAddress{
+    [CmdletBinding()]
     Param(
         [Parameter(Mandatory=$true,
         ValueFromPipeline=$true,

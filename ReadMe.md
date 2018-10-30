@@ -6,3 +6,4 @@ This project is to create Cmdlets which are not available in AD PowerShell and e
 * Remove-ADProxyAddress
 * Add-ADProxyAddress
 * Base64
+* Get-ADGroupMembershipChanges

@@ -1,4 +1,5 @@
 ﻿Function Remove-ADProxyAddress{
+    [CmdletBinding()]
     Param(
         [Parameter(Mandatory=$true,
         ValueFromPipeline=$true,
