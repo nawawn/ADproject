@@ -8,7 +8,8 @@
         [Alias("Id")][String]$Name,
         [Alias("Dn")][String]$DomainName,
         [ValidateSet("smtp:","SMTP:","sip:","SIP:","eum:","EUM:")]$Protocol = "smtp:"        
-    )    
+    )
+        
     $proxyaddress = $Protocol + $Name + "@" + $DomainName
     Try {
         $ProxyArray = Get-ADUser $Name -Properties ProxyAddresses | Select -ExpandProperty ProxyAddresses
@@ -30,7 +31,7 @@
 .DESCRIPTION
    Remove the unwanted proxyaddress from the given AD user account.
 .EXAMPLE
-   Remove-ADProxyAddress -Identity UserName -DomainName "mysub.domain.com" -Protocol "smtp:"
+   Remove-ADProxyAddress -Name UserName -DomainName "mysub.domain.com" -Protocol "smtp:"
 .EXAMPLE
    Remove-ADProxyAddress -Id UserName -Dn "mysub.domain.com" -Protocol "smtp:"
 #>
