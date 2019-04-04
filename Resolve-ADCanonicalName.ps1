@@ -22,6 +22,6 @@
 .EXAMPLE
    Resolve-ADUserCanonicalName -CanonicalName "mydomain.com/UsersOU/Standard/Naw.Awn"
 .EXAMPLE
-   Get-DistributionGroup "Test-DG" | select -ExpandProperty ManagedBy | %{Resolve-ADUserCanonicalName -CName $_}
+   Get-DistributionGroup "Test-DG" | select -ExpandProperty ManagedBy | Resolve-ADUserCanonicalName
 #>  
 }
