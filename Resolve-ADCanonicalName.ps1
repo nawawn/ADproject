@@ -3,12 +3,15 @@
     [CmdletBinding()]    
     [OutputType([String])]
     Param( 
-        [Parameter(Mandatory=$true,
-        ValueFromPipeline=$true,
-        ValueFromPipelineByPropertyName=$true,
-        Position=0)][Alias("CName")]$CanonicalName
+        [Parameter(Mandatory,ValueFromPipeline,ValueFromPipelineByPropertyName,Position=0)]
+        [Alias("CName")]$CanonicalName 
     )
-    return (Get-ADUser -Filter {ObjectClass -eq "user"} -Properties CanonicalName).Where{$_.CanonicalName -eq $CanonicalName} | Select -ExpandProperty Name
+    Begin{}
+    Process{
+        return ((Get-ADUser -Filter 'Enabled -eq $true' -Properties CanonicalName).Where{$_.CanonicalName -eq $CanonicalName} | 
+            Select-Object -ExpandProperty Name
+        )
+    }
     
 <#
 .Synopsis
