@@ -41,7 +41,7 @@
 .PARAMETER Primary
    Use this switch if the value defined in the protocol is primary. By default, the protocol is secondary.
 .EXAMPLE
-   Add-ADProxyAddress -Identity UserName -DomainName "mysub.domain.com" -Protocol "smtp:"
+   Add-ADProxyAddress -Name UserName -DomainName "mysub.domain.com" -Protocol "smtp:"
 .EXAMPLE
    Add-ADProxyAddress -Id UserName -Dn "mysub.domain.com" -Protocol "smtp:"
 #>
