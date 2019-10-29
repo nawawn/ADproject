@@ -1,4 +1,4 @@
-﻿Function Resolve-AdEmployeeID{
+﻿Function Resolve-ADEmployeeID{
     Param(
         [Parameter(Mandatory,ValueFromPipeline,ValueFromPipelineByPropertyName,ValueFromRemainingArguments,Position = 0)]      
         $EmployeeID
@@ -9,7 +9,7 @@
     }
 }
 
-Function Get-AdUserManager{
+Function Get-ADUserManager{
     Param(
         [Parameter(Mandatory,ValueFromPipeline,ValueFromPipelineByPropertyName,Position = 0)]      
         [Alias('Identity')]
@@ -43,7 +43,7 @@ Function Get-AdUserManager{
     }
 }
 
-Function Test-AdUserManager{
+Function Test-ADUserManager{
     [OutputType([bool])]
     Param(
         [Parameter(Mandatory,ValueFromPipelineByPropertyName,Position = 0)]
@@ -59,7 +59,7 @@ Function Test-AdUserManager{
     }
 }
 
-Function Set-AdUserManager{
+Function Set-ADUserManager{
     [CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact='Medium')]
     Param(
         [Parameter(Mandatory,ValueFromPipelineByPropertyName,Position = 0)]

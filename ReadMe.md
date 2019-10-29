@@ -10,5 +10,10 @@ This project is to create Cmdlets which are not available in AD PowerShell and c
 * Remove-ADProxyAddress
 * Remove-ADProxyAddressByDomain
 * Resolve-ADCanonicalName
+* Resolve-ADEmployeeID
+* Get-ADUserManager
+* Test-ADUserManager
+* Set-ADUserManager 
+
 
 
