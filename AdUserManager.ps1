@@ -19,7 +19,7 @@ Function Get-ADUserManager{
         $Hashtable = @{}
     }
     Process{
-        $Property = @('DistinguishedName','Name','UserPrincipalName')
+        $Property = @('DistinguishedName','Name','DisplayName','UserPrincipalName')
         
         $Manager = (Get-ADUser -Identity $Name -Properties Manager).Manager
         If ($Manager){
@@ -27,16 +27,16 @@ Function Get-ADUserManager{
             $Hashtable.Add('Manager',   $($ManagerInfo.Name))
             $Hashtable.Add('ManagerDN', $($ManagerInfo.DistinguishedName))
             $Hashtable.Add('ManagerUPN',$($ManagerInfo.UserPrincipalName))
+            $Hashtable.Add('ManagerDisplayName',$($ManagerInfo.DisplayName))
         }
         Else{
             $Hashtable.Add('Manager',   '')
             $Hashtable.Add('ManagerDN', '')
             $Hashtable.Add('ManagerUPN','')
+            $Hashtable.Add('ManagerDisplayName','')
         }
         $UserInfo = Get-ADUser -Identity $Name -Properties $Property | Select-Object $Property        
-        $Hashtable.Add('Name',$($UserInfo.Name))
-        $Hashtable.Add('DistinguishedName',$($UserInfo.DistinguishedName))
-        $Hashtable.Add('UserPrincipalName',$($UserInfo.UserPrincipalName))        
+        $Hashtable.Add('Name',$($UserInfo.Name))            
     }
     End{
         Return (New-Object PSObject -Property $Hashtable)
@@ -47,16 +47,26 @@ Function Test-ADUserManager{
     [OutputType([bool])]
     Param(
         [Parameter(Mandatory,ValueFromPipelineByPropertyName,Position = 0)]
-        [Alias('UserName')]     
+        [Alias('Identity')]     
         $Name,
-        [Parameter(Mandatory,ValueFromPipelineByPropertyName,ValueFromRemainingArguments,Position = 1)]      
-        [ValidateNotNullOrEmpty()]
+        [Parameter(ValueFromPipelineByPropertyName,ValueFromRemainingArguments,Position = 1)]      
+        [AllowNull()][AllowEmptyString()]
         $Manager
-    )
-    Process{
-        $MgrDN = (Get-ADUser -Identity $Name -Properties Manager).Manager
-        Return ((Get-Aduser -Identity $Manager) -like (Get-Aduser -Identity $MgrDN))
-    }
+    )    
+    Process{        
+        If($Manager){
+            $MgrDN = (Get-ADUser -Identity $Name -Properties Manager).Manager
+            If ($MgrDN){
+                Return ((Get-Aduser -Identity $Manager) -like (Get-Aduser -Identity $MgrDN))
+            }
+            Else {
+                Return $false
+            }
+        }
+        Else{
+            Return ($Null -ne ((Get-ADUser -Identity $Name -Properties Manager).Manager))
+        }
+    }    
 }
 
 Function Set-ADUserManager{
