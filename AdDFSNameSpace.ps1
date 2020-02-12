@@ -11,10 +11,10 @@ Function Get-AdDFSNamespace{
     }
     Process{
         If ($Name){
-            Get-ADObject -Filter "Name -eq '$Name'" -SearchBase $SearchBase -Properties *
+            Get-ADObject -Filter "Name -eq '$Name'" -SearchBase $SearchBase -Properties * | Where-Object{$_.Name -ne 'Dfs-Configuration'}
         }
         Else {
-            Get-ADObject -Filter * -SearchBase $SearchBase -Properties *
+            Get-ADObject -Filter * -SearchBase $SearchBase -Properties * | Where-Object{$_.Name -ne 'Dfs-Configuration'}
         }        
     }
 <#
@@ -38,13 +38,15 @@ Function Remove-AdDFSNamespace{
         $SearchBase = $DfsConfig , $domainDN -Join ","
     }
     Process{
-        if ($PSCmdlet.ShouldProcess($Name, "Removing from $SearchBase")) {
-            $ADObject = Get-ADObject -Filter "Name -eq '$Name'" -SearchBase $SearchBase
-            If($ADObject){
-                $ADObject | Remove-ADObject -Recursive -Confirm:$false
-            }
-            Else {
-                Write-Warning "$Name can't be found under $SearchBase"
+        If ($PSCmdlet.ShouldProcess($Name, "Removing from $SearchBase")) {
+            If($Name -ne 'Dfs-Configuration'){
+                $ADObject = Get-ADObject -Filter "Name -eq '$Name'" -SearchBase $SearchBase
+                If($ADObject){
+                    $ADObject | Remove-ADObject -Recursive -Confirm:$false
+                }
+                Else {
+                    Write-Warning "$Name can't be found under $SearchBase"
+                }
             }            
         }              
     }
